@@ -1,12 +1,14 @@
 import pino from "pino";
 import { env } from "./env";
 
-export const logger = pino({
-  level: env.NODE_ENV === "production" ? "info" : "debug",
-  transport:
-    env.NODE_ENV === "production"
-      ? undefined
-      : {
+const isServerlessRuntime = process.env.VERCEL === "1" || Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME);
+const canUsePrettyLogs = env.NODE_ENV !== "production" && !isServerlessRuntime && Boolean(process.stdout.isTTY);
+
+export const logger = pino(
+  canUsePrettyLogs
+    ? {
+        level: "debug",
+        transport: {
           target: "pino-pretty",
           options: {
             colorize: true,
@@ -14,4 +16,8 @@ export const logger = pino({
             ignore: "pid,hostname",
           },
         },
-});
+      }
+    : {
+        level: env.NODE_ENV === "production" ? "info" : "debug",
+      },
+);
