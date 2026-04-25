@@ -1,14 +1,11 @@
 import { app } from "./app";
-import { connectDatabase, disconnectDatabase } from "./config/database";
+import { disconnectDatabase } from "./config/database";
 import { env } from "./config/env";
-import { initFirebaseIfNeeded } from "./config/firebase";
+import { ensureServerReady } from "./bootstrap";
 import { logger } from "./config/logger";
-import { ensureBaseAppConfig } from "./services/appConfigService";
 
 async function bootstrap(): Promise<void> {
-  await connectDatabase();
-  initFirebaseIfNeeded();
-  await ensureBaseAppConfig();
+  await ensureServerReady();
 
   const server = app.listen(env.PORT, () => {
     logger.info(`Fasto VPN backend listening on http://localhost:${env.PORT}`);

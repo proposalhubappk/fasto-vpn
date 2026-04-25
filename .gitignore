@@ -4,6 +4,7 @@ Thumbs.db
 .idea/
 .vscode/
 *.iml
+**/.vercel/
 
 # Logs
 *.log

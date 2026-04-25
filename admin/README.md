@@ -19,3 +19,10 @@ Open: `http://localhost:3000`
 npm run build
 npm run start
 ```
+
+## Deploy On Vercel
+- Set project root to `admin`
+- Keep framework preset as `Next.js`
+- Add env vars:
+  - `BACKEND_URL=https://<your-backend-domain>`
+  - `COOKIE_SECURE=true`
